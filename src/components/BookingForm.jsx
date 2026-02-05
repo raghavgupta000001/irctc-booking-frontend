@@ -16,13 +16,24 @@ export default function BookingForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+async function handleSubmit(e) {
+  e.preventDefault();
 
-    console.log("Form submitted:", form);
+  const res = await fetch("https://irctc-booking-backend.onrender.com/submit-booking", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      ...form,
+      passengers: []
+    })
+  });
 
-    alert("Booking request submitted (backend not connected yet)");
-  }
+  const data = await res.json();
+  alert("Booking ID: " + data.booking_id);
+}
+
 
   return (
     <form onSubmit={handleSubmit} className="form">
